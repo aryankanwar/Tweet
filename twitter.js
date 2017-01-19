@@ -17,8 +17,26 @@ if(err) {
 }
 });
 
+//fetches tweets for Adamdangelo
 
-//1 finding tweets starting with word the  //2 finding tweets enfing with h
+tweet.get('statuses/user_timeline', { screen_name:'adamdangelo', count: 10}, function(err, data, response) {
+
+  for(var i=0;i<data.length;i++){
+
+  	 var t={user_id:10476462, tweet_id:i,tweet: data[i].text};
+
+  	 con.query("INSERT INTO `tweets` SET ?",t,
+  	 	function(err,data,response){
+                  if(err){console.log('Error in inserting'+err); return err;}
+	                      console.log('Tweets inserted');
+           }) 
+
+  }
+
+})
+
+
+//1 finding tweets starting with word the  //2 finding tweets enfing with st
 
 
 
