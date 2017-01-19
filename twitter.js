@@ -63,7 +63,7 @@ app.post('/', function(req, res){
 
 
 
-//1st function//
+//1st function fetching tweets with 'the' word in tweets //
 
 function fetchTweetsWithThe(userId, responseObj, cb){
 
@@ -78,7 +78,7 @@ function fetchTweetsWithThe(userId, responseObj, cb){
 	 
 }
 
-//2nd function //
+//2nd function fetching tweets ending with st //
 
 function fetchTweetsWithSt(userId, responseObj, cb){
 	con.query("SELECT tweet FROM tweets WHERE tweet LIKE '%st' AND user_id="+userId,
