@@ -19,9 +19,7 @@ con.connect(function(err){
 //fetches tweets for Adamdangelo
 tweet.get('statuses/user_timeline', { screen_name:'adamdangelo', count: 10}, function(err, data, response) {
   for(var i=0;i<data.length;i++){
-
   	 var t={user_id:10476462, tweet_id:i,tweet: data[i].text};
-
   	 con.query("INSERT INTO `tweets` SET ?",t,
   	 	function(err,data,response){
                   if(err){
@@ -43,7 +41,7 @@ app.listen(1337,function(){
 app.post('/', function(req, res){
 	var user_id     = req.body;         //getting  json string from post req.body and passing to user_id 
         var response    = Number(JSON.stringify(user_id.user_id));
-        userId          = response;
+        var userId      = response;
 	var asyncTasks  = [];       //array to be pushed in asynch parallel or series
 	var responseObj = {};
         var response    = {}; 
