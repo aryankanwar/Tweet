@@ -30,85 +30,58 @@ tweet.get('statuses/user_timeline', { screen_name:'adamdangelo', count: 10}, fun
                   if(err){console.log('Error in inserting'+err); return err;}
 	                      console.log('Tweets inserted');
            }) 
-
   }
-
 })
-
-
 //1 finding tweets starting with word the  //2 finding tweets enfing with st
 
-
-
 var app=express();
-
-
-//var user_id='';
-
 app.use(bodyParser());
-
 
 app.listen(1337,function(){
 
 	console.log('Listening at port 1337');
 });
 
-
-
-
 app.post('/', function(req, res){
-	user_id=req.body;         //getting  json string from post req.body and passing to user_id 
-    var response=Number(JSON.stringify(user_id.user_id));
-    userId=response;
-
-	var asyncTasks = [];       //array to be pushed in asynch parallel or series
+	var user_id     = req.body;         //getting  json string from post req.body and passing to user_id 
+        var response    = Number(JSON.stringify(user_id.user_id));
+        userId          = response;
+	var asyncTasks  = [];       //array to be pushed in asynch parallel or series
 	var responseObj = {};
-
+        var response    = {}; 
 	asyncTasks.push(fetchTweetsWithThe.bind(null, userId, responseObj));
 	asyncTasks.push(fetchTweetsWithSt.bind(null, userId, responseObj));
 
 	async.parallel(asyncTasks, function(error){
 		if(error){
-
+                 return (error);
 		}
 		var response = {
-			TheTweets : responseObj.TheTweets,
+			TheTweets    : responseObj.TheTweets,
 			TweetsWithSt : responseObj.TweetsWithSt
 		}
 		res.send(response);
 	})
 })
 
-
-
 //1st function fetching tweets with 'the' word in tweets //
-
-function fetchTweetsWithThe(userId, responseObj, cb){
-
-
-	 con.query("SELECT tweet FROM tweets WHERE tweet LIKE '%the%' AND user_id="+userId,
-  	 	        function(err,rows){
-                  if(err){console.log('Error'+err); return err;}
-	                    responseObj.TheTweets=JSON.stringify(rows);  
-	                    cb(); 
-	                   
+function fetchTweetsWithThe(userId, responseObj, callback){
+	 con.query("SELECT tweet FROM tweets WHERE tweet LIKE '%the%' AND user_id="+userId,function(err,rows){
+                  if(err){
+		  console.log('Error'+err); return err;
+		  }
+	          responseObj.TheTweets=JSON.stringify(rows);  
+	          callback(); 	                   
            })	
-	 
-}
-
+	 }
 //2nd function fetching tweets ending with st //
 
-function fetchTweetsWithSt(userId, responseObj, cb){
-	con.query("SELECT tweet FROM tweets WHERE tweet LIKE '%st' AND user_id="+userId,
-  	 	        function(err,rows){
-                  if(err){console.log('Error'+err); return err;}
-	                    responseObj.TweetsWithSt=JSON.stringify(rows);
-	                    cb();   
-	                    
+function fetchTweetsWithSt(userId, responseObj, callback){
+	con.query("SELECT tweet FROM tweets WHERE tweet LIKE '%st' AND user_id="+userId,function(err,rows){		
+                  if(err){
+		  console.log('Error'+err); return err;
+		  }		
+	          responseObj.TweetsWithSt=JSON.stringify(rows);
+	          callback();   	                    
            })	
-	
-
 }
-
-
-
